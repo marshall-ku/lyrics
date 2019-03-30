@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>변환기</title>
+  <style>
+    @font-face { font-family: 'KHNPHD'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/KHNPHD.woff') format('woff'); font-weight: normal; font-style: normal; }
+    *{box-sizing:border-box}
+    br{color:transparent}
+    p {margin:0}
+    html, textarea{font-family:khnphd}
+    html, body {margin:0;padding:0;width:100%;height:100%;overflow:hidden}
+    .cc-checker {
+      height:20px;
+      line-height:20px;
+      padding-left:5%;
+      margin-top:calc(5% - 20px)
+    }
+    #wrapper {
+      display:flex;
+      width:100%;
+      height:calc(95% - 20px);
+      padding:5%;
+      padding-top:0;
+      justify-content: space-between;
+      overflow:hidden
+    }
+    #lyric, output {
+      width:48%;
+      border:1px solid #666;
+      outline:0;
+      resize: none;
+      word-break: break-all;
+      overflow:hidden auto;
+      line-height: 1.8
+    }
+    .fixed {
+      position:fixed;
+      bottom:1%;
+      width:100%;
+      height:3%;
+      text-align: center
+    }
+    #fake-copy {
+      position:fixed;
+      right:-100vw
+    }
+  </style>
+</head>
+
+<body>
+  <div class="cc-checker">
+    <input type="checkbox" id="cc">
+    <label for="cc">Color Code</label>
+  </div>
+  <div id="wrapper">
+    <textarea id="lyric" placeholder="가사를 입력해주세요."></textarea>
+    <output></output>
+  </div>
+  <textarea id="fake-copy"></textarea>
+
+  <div class="fixed">
+    <button id="button">Convert & Copy</button>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $("#button").click(function() {
+      var a;
+      if ($("#cc").is(":checked")) {
+        a = "<p class=\"\"";
+      } else {
+        a = "<p"
+      }
+
+      $("output").html($("#lyric").val().replace(/\n/g, "<br>")),
+        $("output").contents().wrap("<p></p>"),
+        $("output").html($("output").html().replace(/<p><br><\/p><p><br><\/p>/g, "<fake>").replace(/<p><br><\/p>/g, "").replace(/<fake>/g, "<p><br></p>")),
+        $("output").text($("output").html().replace(/<p/g, a).replace(/<\/p>/g, "</p>\n")),
+        $("output").html($("output").html().replace(/\n/g, "<br>\n")),
+        $("#fake-copy").val($("output").text()),
+        $("#fake-copy").select(),
+        document.execCommand("copy");
+    })
+  </script>
+</body>
+
+</html>
