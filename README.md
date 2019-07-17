@@ -2,9 +2,9 @@
 ***
 ### 프리뷰
 
-트와이스 : https://marshall-ku.com/214
+트와이스 : https://marshall-ku.com/twice/discography/
 
-태연 : https://marshall-ku.com/253
+태연 : https://marshall-ku.tistory.com/253
 
 ***
 ### 준비물
