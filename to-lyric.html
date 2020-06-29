@@ -54,6 +54,8 @@
   <div class="cc-checker">
     <input type="checkbox" id="cc">
     <label for="cc">Color Code</label>
+    <input type="checkbox" id="plain">
+    <label for="plain">Plain Text</label>
   </div>
   <div id="wrapper">
     <textarea id="lyric" placeholder="가사를 입력해주세요."></textarea>
@@ -66,22 +68,36 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
-    $("#button").click(function() {
-      var a;
-      if ($("#cc").is(":checked")) {
-        a = "<p class=\"\"";
-      } else {
-        a = "<p"
-      }
+    document.getElementById("button").addEventListener("click", () => {
+      const isPlain = document.getElementById("plain").checked;
+      const pTag = document.getElementById("cc").checked ? "<p class=\"\"" : "<p";
+      const inputElem = document.getElementById("lyric");
+      const input = inputElem.value.split("\n");
+      const outputElem = document.querySelector("output");
+      const fakeCopy = document.getElementById("fake-copy");
 
-      $("output").html($("#lyric").val().replace(/\n/g, "<br>")),
-        $("output").contents().wrap("<p></p>"),
-        $("output").html($("output").html().replace(/<p><br><\/p><p><br><\/p>/g, "<fake>").replace(/<p><br><\/p>/g, "").replace(/<fake>/g, "<p><br></p>")),
-        $("output").text($("output").html().replace(/<p/g, a).replace(/<\/p>/g, "</p>\n")),
-        $("output").html($("output").html().replace(/\n/g, "<br>\n")),
-        $("#fake-copy").val($("output").text()),
-        $("#fake-copy").select(),
-        document.execCommand("copy");
+      let output = "";
+
+      input.forEach(string => {
+        output += `${
+          isPlain
+          ? (
+            string ? `${string}\\n` : "\\n"
+          )
+          : (
+            string ? `${pTag}>${string}</p>\n` : "<p><br /></p>\n"
+          )
+        }`
+      })
+
+      isPlain && (output = output.slice(0, -2));
+    
+      outputElem.innerText = output;
+    
+      fakeCopy.value = output;
+      fakeCopy.select();
+    
+      document.execCommand("copy");
     })
   </script>
 </body>
